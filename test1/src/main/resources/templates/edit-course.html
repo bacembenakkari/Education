@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifier le Cours</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .btn-back {
+            display: inline-block;
+            padding: 8px 16px;
+            margin-top: 20px;
+            background-color: #ddd;
+            color: #333;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-back:hover {
+            background-color: #ccc;
+        }
+
+        .form-footer {
+            text-align: right;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            main {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Modifier le Cours</h1>
+</header>
+
+<main>
+    <form th:action="@{/res/courses/update/{id}(id=${course.id})}" method="post">
+        <div class="form-group">
+            <label for="title">Titre:</label>
+            <input type="text" id="title" name="title" th:value="${course.title}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required th:text="${course.description}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="duration">Durée:</label>
+            <input type="text" id="duration" name="duration" th:value="${course.duration}" placeholder="Ex: 2h" required>
+        </div>
+
+        <div class="form-group">
+            <label for="teacherName">Nom de l'Enseignant:</label>
+            <input type="text" id="teacherName" name="teacherName" th:value="${course.teacherName}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Prix:</label>
+            <input type="text" id="price" name="price" th:value="${course.price}" placeholder="Ex: 50.00" required>
+        </div>
+
+        <div class="form-footer">
+            <button type="submit">Sauvegarder</button>
+        </div>
+    </form>
+
+    <a href="/res/courses/list" class="btn-back">Retour à la liste des cours</a>
+</main>
+
+</body>
+</html>

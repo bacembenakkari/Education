@@ -1,0 +1,36 @@
+datasource:
+  url: jdbc:mysql://database:3306/thisdata2?createDatabaseIfNotExist=true
+  username: root
+  password:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+
+jpa:
+  show-sql: false
+  hibernate:
+    ddl-auto: update
+    dialect: org.hibernate.dialect.MySQL5Dialect
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+
+thymeleaf:
+  prefix: classpath:/templates/
+  suffix: .html
+  enabled: true
+
+web:
+  resources:
+    static-locations: classpath:/static/
+
+security:
+  jwt:
+    secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+    expiration-time: 3600000
+
+uploads:
+  dir: uploads/

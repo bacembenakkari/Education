@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des Cours</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            position: relative;
+        }
+        header .all-users-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        header .all-users-btn:hover {
+            background-color: #0056b3;
+        }
+        main {
+            margin: 20px auto;
+            max-width: 1000px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        form input[type="text"] {
+            width: 70%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        form button {
+            padding: 8px 16px;
+            font-size: 16px;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th, table td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .actions a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .actions a:hover {
+            text-decoration: underline;
+        }
+        .no-data {
+            text-align: center;
+            color: #888;
+        }
+        .add-course-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .add-course-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Liste des Cours Disponibles</h1>
+    <!-- "All Users" Button -->
+    <a href="/res/users/users" class="all-users-btn">All Users</a>
+
+</header>
+
+<main>
+    <!-- Add Course Button -->
+    <a href="/res/courses/add" class="add-course-btn">Ajouter un Cours</a>
+
+    <!-- Search form -->
+    <form th:action="@{/res/courses/search}" method="get">
+        <input type="text" name="searchTerm" placeholder="Rechercher un cours..." required>
+        <button type="submit">Rechercher</button>
+    </form>
+
+
+
+    <!-- Table displaying courses -->
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Intitulé</th>
+            <th>Description</th>
+            <th>Durée</th>
+            <th>Nom de l'enseignant</th>
+            <th>Prix</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course, stat : ${courses}">
+            <td th:text="${stat.index + 1}"></td>
+            <td th:text="${course.title}">Titre du cours</td>
+            <td th:text="${course.description}">Description du cours</td>
+            <td th:text="${course.duration}">Durée</td>
+            <td th:text="${course.teacherName}">Nom de l'enseignant</td>
+            <td th:text="${course.price} + ' TND'">Prix</td>
+            <td class="actions">
+                <a th:href="@{'/res/courses/details/' + ${course.id}}">Voir</a> |
+                <a th:href="@{'/res/courses/edit/' + ${course.id}}">Modifier</a> |
+                <a th:href="@{'/res/courses/delete/' + ${course.id}}"
+                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?');">Supprimer</a>
+            </td>
+        </tr>
+        <tr th:if="${courses.isEmpty()}">
+            <td colspan="7" class="no-data">Aucun cours disponible</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Ajouter un Nouveau Cours</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+    }
+    main {
+      margin: 20px auto;
+      max-width: 600px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    form label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    form input, form textarea, form button {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    form textarea {
+      resize: vertical;
+    }
+    form button {
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #45a049;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Ajouter un Nouveau Cours</h1>
+</header>
+
+<main>
+  <form th:action="@{/res/courses/create}" method="post">
+    <label for="title">Titre du cours :</label>
+    <input type="text" id="title" name="title" placeholder="Entrez le titre du cours" required>
+
+    <label for="description">Description :</label>
+    <textarea id="description" name="description" rows="4" placeholder="Entrez une description du cours" required></textarea>
+
+    <label for="duration">Durée :</label>
+    <input type="text" id="duration" name="duration" placeholder="Ex: 2h" required>
+
+    <label for="teacherName">Nom de l'enseignant :</label>
+    <input type="text" id="teacherName" name="teacherName" placeholder="Entrez le nom de l'enseignant" required>
+
+    <label for="price">Prix :</label>
+    <input type="number" id="price" name="price" step="0.01" placeholder="Entrez le prix du cours" required>
+
+    <button type="submit">Ajouter le Cours</button>
+  </form>
+</main>
+</body>
+</html>
