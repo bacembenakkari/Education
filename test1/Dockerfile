@@ -15,8 +15,12 @@ WORKDIR /app
 # Copy the built JAR file from the build stage
 COPY --from=build /app/target/test1-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port the application runs on
+# Expose the port
 EXPOSE 8082
 
-# Set the entry point to run the JAR file
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost:8082/actuator/health || exit 1
+
+# Run with explicit Java options
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]

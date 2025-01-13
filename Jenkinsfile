@@ -16,6 +16,7 @@ pipeline {
         stage('Cleanup Workspace') {
             steps {
                 cleanWs()
+                sh 'docker ps -a'  // Verify existing containers
             }
         }
 
@@ -47,9 +48,12 @@ pipeline {
         
         stage('Docker Hub Login') {
             steps {
-                sh '''
-                    echo "${DOCKERHUB_CREDENTIALS_PSW}" | docker login -u "${DOCKERHUB_CREDENTIALS_USR}" --password-stdin
-                '''
+                script {
+                    sh 'docker info'  // Verify Docker is running
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
+                    }
+                }
             }
         }
         
@@ -78,10 +82,13 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh '''
+                    sh 'pwd'  // Verify working directory
+                    sh 'ls -la'  // List files
+                    sh 'docker-compose version'  // Check docker-compose version
+                    sh """
                         docker-compose down || true
                         docker-compose up -d
-                    '''
+                    """
                 }
             }
         }
@@ -91,15 +98,14 @@ pipeline {
         always {
             sh 'docker logout'
             cleanWs()
-            sh '''
-                docker system prune -f
-            '''
+            sh 'docker system prune -f || true'
         }
         success {
             echo 'Pipeline successfully executed!'
         }
         failure {
             echo 'Pipeline failed!'
+            sh 'docker-compose logs'  // Display logs on failure
         }
     }
 }

@@ -1,26 +1,25 @@
-# docker-compose.yml
 version: '3.8'
 services:
   frontend:
-    build:
-      context: ./test-app
+    image: bacem592/frontend-education:latest
     ports:
       - "3000:3000"
+    container_name: docker-frontend
     depends_on:
       - backend
     networks:
       - app-network
       
   backend:
-    build:
-      context: ./test1
+    image: bacem592/backend-education:latest
     ports:
       - "8082:8082"
+    container_name: docker-backend
     environment:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/thisdata2?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD:
+      SPRING_DATASOURCE_PASSWORD: example_password
     depends_on:
       - database
     networks:
@@ -28,11 +27,12 @@ services:
       
   database:
     image: mysql:8.0
+    container_name: docker-database
     environment:
-      MYSQL_ROOT_PASSWORD:
+      MYSQL_ROOT_PASSWORD: example_password  # Remplacez par un vrai mot de passe
       MYSQL_DATABASE: thisdata2
     ports:
-      - "3307:3306"
+      - "3307:3306"  # Base de données accessible via localhost:3307
     volumes:
       - db-data:/var/lib/mysql
     networks:
@@ -43,5 +43,3 @@ networks:
 
 volumes:
   db-data:
-
-
